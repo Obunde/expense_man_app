@@ -10,20 +10,20 @@ Expense Management Application built with Ruby on Rails.
 
 The application solves the problem of losing track of personal finances by providing:
 
-- Expense tracking  
-- Category management  
-- Monthly budget setting  
-- Spending overview dashboard  
-- Administrator management screen  
+- Expense tracking
+- Category management
+- Monthly budget setting
+- Spending overview dashboard
+- Administrator management screen
 
 ---
 
 # Development Environment
 
-- **Ruby:** 3.0.1 
-- **Ruby on Rails:** 7.1.5 
-- **Database:** PostgreSQL  
-- **Testing:** RSpec  
+- **Ruby:** 3.0.1
+- **Ruby on Rails:** 7.1.5
+- **Database:** PostgreSQL
+- **Testing:** RSpec
 
 ---
 
@@ -112,33 +112,38 @@ Below is the screen transition diagram representing the application flow.
 # Application Features
 
 ## User Authentication
-- Sign up  
-- Login  
-- Logout  
+
+- Sign up
+- Login
+- Logout
 
 ## Expense Management
-- Create expense  
-- Edit expense  
-- Delete expense  
-- View expense list  
+
+- Create expense
+- Edit expense
+- Delete expense
+- View expense list
 
 ## Category Management
-- Create category  
-- Manage categories  
+
+- Create category
+- Manage categories
 
 ## Budget Setting
-- Set monthly budget  
-- Monitor spending  
+
+- Set monthly budget
+- Monitor spending
 
 ## Administrator Screen
-- Admin Dashboard (rails_admin first screen only)  
-- User Management  
-- Expense Management  
+
+- Admin Dashboard (rails_admin first screen only)
+- User Management
+- Expense Management
 
 ---
 
 # Notes
 
-- The administrator screen is implemented using `rails_admin`.  
-- Only the first admin screen is described in the screen transition diagram as required by the assignment.  
-- All high-priority functions are planned to be tested using RSpec.  
+- The administrator screen is implemented using `rails_admin`.
+- Only the first admin screen is described in the screen transition diagram as required by the assignment.
+- All high-priority functions are planned to be tested using RSpec.
