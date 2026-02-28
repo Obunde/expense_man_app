@@ -97,7 +97,7 @@ https://cacoo.com/diagrams/Ql8jeHXKdwt1r17B/16003
 
 Below is the ER diagram representing the relationships between tables.
 
-![ER Diagram](images/er_diagram.png)
+![ER Diagram](images/er_diagram1.png)
 
 ---
 
