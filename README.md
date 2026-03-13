@@ -105,7 +105,7 @@ Below is the ER diagram representing the relationships between tables.
 
 Below is the screen transition diagram representing the application flow.
 
-![Screen Transition Diagram](images/screen_transition.png)
+![Screen Transition Diagram](images/st_diagram.png)
 
 ---
 
