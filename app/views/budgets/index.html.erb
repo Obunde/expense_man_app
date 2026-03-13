@@ -1,0 +1,68 @@
+<%# app/views/budgets/index.html.erb %>
+<h2>Budget Setting</h2>
+
+<!-- Budget Setting Form -->
+<div>
+  <h3>Budget setting</h3>
+
+  <%= form_with model: @budget do |f| %>
+    <% if @budget.errors.any? %>
+      <div>
+        <% @budget.errors.full_messages.each do |msg| %>
+          <p><%= msg %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.label :month, "Month" %>
+      <%= f.select :month,
+          (1..12).map { |m| [Date::MONTHNAMES[m], m] },
+          { include_blank: "Select month", selected: @budget.month } %>
+    </div>
+
+    <div>
+      <%= f.label :year, "Year" %>
+      <%= f.number_field :year, placeholder: "e.g. 2026", value: @budget.year || Date.current.year %>
+    </div>
+
+    <div>
+      <%= f.label :monthly_limit, "Monthly limit" %>
+      <%= f.number_field :monthly_limit, placeholder: "Enter budget amount", value: @budget.monthly_limit %>
+    </div>
+
+    <%= f.submit "Save" %>
+  <% end %>
+</div>
+
+<!-- Budget Details List -->
+<div>
+  <h3>Budget details</h3>
+
+  <% if @budgets.any? %>
+    <table>
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Year</th>
+          <th>Monthly limit</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @budgets.each do |budget| %>
+          <tr>
+            <td><%= Date::MONTHNAMES[budget.month] %></td>
+            <td><%= budget.year %></td>
+            <td><%= budget.monthly_limit %></td>
+            <td>
+              <%= link_to "Edit", edit_budget_path(budget) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No budgets set yet.</p>
+  <% end %>
+</div>

@@ -1,0 +1,53 @@
+<%# app/views/categories/index.html.erb %>
+<h2>Categories</h2>
+
+<!-- Add Category Form -->
+<div>
+  <h3>Add Category</h3>
+
+  <%= form_with model: @category do |f| %>
+    <% if @category.errors.any? %>
+      <div>
+        <% @category.errors.full_messages.each do |msg| %>
+          <p><%= msg %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.label :name, "Category name" %>
+      <%= f.text_field :name, placeholder: "Enter category name" %>
+    </div>
+
+    <%= f.submit "Add" %>
+  <% end %>
+</div>
+
+<!-- List of Categories -->
+<div>
+  <h3>List of created categories</h3>
+
+  <% if @categories.any? %>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @categories.each do |category| %>
+          <tr>
+            <td><%= category.name %></td>
+            <td>
+              <%= link_to "Delete", category_path(category),
+                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No categories created yet.</p>
+  <% end %>
+</div>
