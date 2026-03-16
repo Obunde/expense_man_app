@@ -1,0 +1,27 @@
+<%= form_with(model: [:admin, user]) do |f| %>
+  <div>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :email %><br>
+    <%= f.email_field :email %>
+  </div>
+
+  <% if user.new_record? %>
+    <div>
+      <%= f.label :password %><br>
+      <%= f.password_field :password %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :admin, "Is Admin?" %>
+    <%= f.check_box :admin %>
+  </div>
+
+  <div>
+    <%= f.submit %>
+  </div>
+<% end %>
