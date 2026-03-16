@@ -1,99 +1,99 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# This file is idempotent. Use: bin/rails db:seed
+puts "Starting Seeding Process..."
 
 admin_password = ENV.fetch("ADMIN_SEED_PASSWORD", "password123")
 user_password = ENV.fetch("USER_SEED_PASSWORD", "password123")
 
-admin = User.find_or_initialize_by(email: "admin@example.com")
-admin.name = "Admin User"
-admin.admin = true
-admin.password = admin_password
-admin.password_confirmation = admin_password
-admin.save!
+# 1. SEED USERS (5 Users total)
+users_to_seed = [
+  { name: "Admin User", email: "admin@example.com", admin: true },
+  { name: "Regular User", email: "user@example.com", admin: false },
+  { name: "Jane Doe", email: "jane@example.com", admin: false },
+  { name: "John Smith", email: "john@example.com", admin: false },
+  { name: "Expense Manager", email: "manager@example.com", admin: true }
+]
 
-user = User.find_or_initialize_by(email: "user@example.com")
-user.name = "Regular User"
-user.admin = false
-user.password = user_password
-user.password_confirmation = user_password
-user.save!
+seeded_users = users_to_seed.map do |u_data|
+  user = User.find_or_initialize_by(email: u_data[:email])
+  user.name = u_data[:name]
+  user.admin = u_data[:admin]
+  user.password = admin_password
+  user.password_confirmation = admin_password
+  user.save!
+  user
+end
 
-puts "Seeded users: #{admin.email}, #{user.email}"
+puts "✅ Seeded #{User.count} Users."
 
-categories_by_user = {
-	admin => ["Office", "Travel", "Utilities", "Food"],
-	user => ["Groceries", "Transport", "Health", "Entertainment"]
+# 2. SEED CATEGORIES (At least 6 per primary user)
+categories_map = {
+  "admin@example.com" => ["Office", "Travel", "Utilities", "Marketing", "Software", "Rent"],
+  "user@example.com" => ["Groceries", "Transport", "Health", "Entertainment", "Dining Out", "Savings"]
 }
 
 seeded_categories = {}
 
-categories_by_user.each do |seed_user, category_names|
-	seeded_categories[seed_user.id] = category_names.each_with_object({}) do |name, memo|
-		memo[name] = Category.find_or_create_by!(user: seed_user, name: name)
-	end
+categories_map.each do |email, names|
+  user = User.find_by(email: email)
+  seeded_categories[user.id] = names.map do |name|
+    Category.find_or_create_by!(user: user, name: name)
+  end
 end
 
+puts "✅ Seeded #{Category.count} Categories."
+
+# 3. SEED EXPENSES (6 per primary user)
 today = Date.current
-last_month_date = today.last_month
 
 expenses_data = {
-	admin => [
-		{ title: "Team Lunch", amount: 120, expense_date: today - 10, category_name: "Food" },
-		{ title: "Cloud Hosting", amount: 300, expense_date: today - 7, category_name: "Utilities" },
-		{ title: "Airport Taxi", amount: 55, expense_date: last_month_date + 5, category_name: "Travel" },
-		{ title: "Stationery", amount: 40, expense_date: last_month_date + 9, category_name: "Office" }
-	],
-	user => [
-		{ title: "Weekly Groceries", amount: 85, expense_date: today - 8, category_name: "Groceries" },
-		{ title: "Bus Pass", amount: 30, expense_date: today - 5, category_name: "Transport" },
-		{ title: "Pharmacy", amount: 25, expense_date: last_month_date + 6, category_name: "Health" },
-		{ title: "Cinema", amount: 20, expense_date: last_month_date + 12, category_name: "Entertainment" }
-	]
+  "admin@example.com" => [
+    { title: "Internet Subscription", amount: 5000, date: today - 2, cat: "Utilities" },
+    { title: "Business Flights", amount: 45000, date: today - 15, cat: "Travel" },
+    { title: "Co-working Space", amount: 15000, date: today - 20, cat: "Rent" },
+    { title: "Facebook Ads", amount: 8000, date: today - 30, cat: "Marketing" },
+    { title: "New Keyboard", amount: 3500, date: today - 45, cat: "Office" },
+    { title: "Zoom Pro", amount: 2500, date: today - 60, cat: "Software" }
+  ],
+  "user@example.com" => [
+    { title: "Naivas Groceries", amount: 4200, date: today - 1, cat: "Groceries" },
+    { title: "Matatu Fare", amount: 150, date: today - 3, cat: "Transport" },
+    { title: "KFC Dinner", amount: 1800, date: today - 10, cat: "Dining Out" },
+    { title: "Netflix Monthly", amount: 1100, date: today - 25, cat: "Entertainment" },
+    { title: "Gym Membership", amount: 3000, date: today - 40, cat: "Health" },
+    { title: "Stock Investment", amount: 10000, date: today - 50, cat: "Savings" }
+  ]
 }
 
-expenses_data.each do |seed_user, records|
-	records.each do |record|
-		category = seeded_categories[seed_user.id].fetch(record[:category_name])
-
-		expense = Expense.find_or_initialize_by(
-			user: seed_user,
-			category: category,
-			title: record[:title],
-			expense_date: record[:expense_date]
-		)
-		expense.amount = record[:amount]
-		expense.save!
-	end
+expenses_data.each do |email, records|
+  user = User.find_by(email: email)
+  records.each do |r|
+    category = Category.find_by(user: user, name: r[:cat])
+    Expense.find_or_create_by!(
+      user: user,
+      category: category,
+      title: r[:title],
+      expense_date: r[:date]
+    ) do |e|
+      e.amount = r[:amount]
+    end
+  end
 end
 
-budgets_data = {
-	admin => [
-		{ month: today.month, year: today.year, monthly_limit: 2500 },
-		{ month: last_month_date.month, year: last_month_date.year, monthly_limit: 2200 }
-	],
-	user => [
-		{ month: today.month, year: today.year, monthly_limit: 900 },
-		{ month: last_month_date.month, year: last_month_date.year, monthly_limit: 850 }
-	]
-}
+puts "✅ Seeded #{Expense.count} Expenses."
 
-budgets_data.each do |seed_user, records|
-	records.each do |record|
-		budget = Budget.find_or_initialize_by(
-			user: seed_user,
-			month: record[:month],
-			year: record[:year]
-		)
-		budget.monthly_limit = record[:monthly_limit]
-		budget.save!
-	end
+# 4. SEED BUDGETS (5 months of history per user)
+(0..4).each do |months_back|
+  date = today - months_back.months
+  seeded_users.each do |user|
+    limit = user.admin? ? (20000 + rand(5000)) : (8000 + rand(2000))
+    
+    Budget.find_or_initialize_by(
+      user: user,
+      month: date.month,
+      year: date.year
+    ).update!(monthly_limit: limit)
+  end
 end
 
-puts "Seeded categories: #{Category.count}, expenses: #{Expense.count}, budgets: #{Budget.count}"
+puts "✅ Seeded #{Budget.count} Budget records."
+puts "--- Seeding Complete! ---"
