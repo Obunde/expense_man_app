@@ -1,32 +1,12 @@
-<%# app/views/budgets/edit.html.erb %>
-<h2>Budget Editing</h2>
+<div class="page-header mb-4">
+  <h3>Edit Budget</h3>
+</div>
 
-<%= form_with model: @budget do |f| %>
-  <% if @budget.errors.any? %>
-    <div>
-      <% @budget.errors.full_messages.each do |msg| %>
-        <p><%= msg %></p>
-      <% end %>
+<div class="card shadow-sm border-0 mx-auto" style="max-width: 500px;">
+  <div class="card-body p-4">
+    <%= render 'form', budget: @budget %>
+    <div class="text-center mt-3">
+      <%= link_to "Back to Budgets", budgets_path, class: "text-link small" %>
     </div>
-  <% end %>
-
-  <div>
-    <%= f.label :month, "Month" %>
-    <%= f.select :month,
-        (1..12).map { |m| [Date::MONTHNAMES[m], m] },
-        { selected: @budget.month } %>
   </div>
-
-  <div>
-    <%= f.label :year, "Year" %>
-    <%= f.number_field :year %>
-  </div>
-
-  <div>
-    <%= f.label :monthly_limit, "Monthly limit" %>
-    <%= f.number_field :monthly_limit %>
-  </div>
-
-  <%= f.submit "Update" %>
-  <%= link_to "Back", budgets_path %>
-<% end %>
+</div>

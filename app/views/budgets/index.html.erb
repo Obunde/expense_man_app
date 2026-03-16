@@ -1,68 +1,58 @@
-<%# app/views/budgets/index.html.erb %>
-<h2>Budget Setting</h2>
-
-<!-- Budget Setting Form -->
-<div>
-  <h3>Budget setting</h3>
-
-  <%= form_with model: @budget do |f| %>
-    <% if @budget.errors.any? %>
-      <div>
-        <% @budget.errors.full_messages.each do |msg| %>
-          <p><%= msg %></p>
-        <% end %>
-      </div>
-    <% end %>
-
-    <div>
-      <%= f.label :month, "Month" %>
-      <%= f.select :month,
-          (1..12).map { |m| [Date::MONTHNAMES[m], m] },
-          { include_blank: "Select month", selected: @budget.month } %>
-    </div>
-
-    <div>
-      <%= f.label :year, "Year" %>
-      <%= f.number_field :year, placeholder: "e.g. 2026", value: @budget.year || Date.current.year %>
-    </div>
-
-    <div>
-      <%= f.label :monthly_limit, "Monthly limit" %>
-      <%= f.number_field :monthly_limit, placeholder: "Enter budget amount", value: @budget.monthly_limit %>
-    </div>
-
-    <%= f.submit "Save" %>
-  <% end %>
+<div class="page-header mb-4">
+  <h3>Budget Management</h3>
 </div>
 
-<!-- Budget Details List -->
-<div>
-  <h3>Budget details</h3>
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <h5 class="card-title mb-3 text-success">Setting</h5>
+        <%= render 'form', budget: @budget %>
+      </div>
+    </div>
+  </div>
 
-  <% if @budgets.any? %>
-    <table>
-      <thead>
-        <tr>
-          <th>Month</th>
-          <th>Year</th>
-          <th>Monthly limit</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @budgets.each do |budget| %>
-          <tr>
-            <td><%= Date::MONTHNAMES[budget.month] %></td>
-            <td><%= budget.year %></td>
-            <td><%= budget.monthly_limit %></td>
-            <td>
-              <%= link_to "Edit", edit_budget_path(budget) %>
-            </td>
-          </tr>
+  <div class="col-md-8">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-0">
+        <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">History & Details</h5>
+        </div>
+
+        <% if @budgets.any? %>
+          <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+              <thead class="bg-light">
+                <tr>
+                  <th class="ps-4 py-3 text-muted small text-uppercase">Period</th>
+                  <th class="py-3 text-muted small text-uppercase">Monthly Limit</th>
+                  <th class="pe-4 py-3 text-end text-muted small text-uppercase">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @budgets.each do |budget| %>
+                  <tr>
+                    <td class="ps-4">
+                      <span class="fw-bold"><%= Date::MONTHNAMES[budget.month] %></span>
+                      <small class="text-muted ms-1"><%= budget.year %></small>
+                    </td>
+                    <td>
+                      <span class="text-success fw-bold"><%= number_to_currency(budget.monthly_limit) %></span>
+                    </td>
+                    <td class="pe-4 text-end">
+                      <%= link_to "Edit", edit_budget_path(budget), class: "btn-secondary btn-sm px-3" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <div class="p-5 text-center">
+            <p class="text-muted">No budgets have been set yet.</p>
+          </div>
         <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>No budgets set yet.</p>
-  <% end %>
+      </div>
+    </div>
+  </div>
 </div>

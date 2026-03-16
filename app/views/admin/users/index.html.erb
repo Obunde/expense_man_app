@@ -1,45 +1,57 @@
-<main>
-  <h3>Users</h3>
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">User Management</h3>
+  <%= link_to "New User", new_admin_user_path, class: "btn-primary btn-sm" %>
+</div>
 
-  <% if @users.any? %>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Admin rights</th>
-          <th colspan="3"></th> <%# Empty headers for the action buttons %>
-        </tr>
-      </thead>
-      <tbody>
-        <% @users.each do |user| %>
-          <tr>
-            <td><%= user.name %></td>
-            <td><%= user.admin? ? "yes" : "no" %></td>
-            <td>
-              <%= link_to "Edit", edit_admin_user_path(user) %>
-            </td>
-            <td>
-              <%= link_to "Details", admin_user_path(user) %>
-            </td>
-            <td>
-              <%= link_to "Delete", admin_user_path(user),
-                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+<div class="card shadow-sm border-0">
+  <div class="card-body p-0">
+    <% if @users.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+          <thead class="bg-light">
+            <tr>
+              <th class="ps-4 py-3 text-muted small text-uppercase">User Name</th>
+              <th class="py-3 text-muted small text-uppercase">Status</th>
+              <th class="pe-4 py-3 text-end text-muted small text-uppercase">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td class="ps-4">
+                  <div class="fw-bold text-dark"><%= user.name %></div>
+                  <div class="small text-muted"><%= user.email %></div>
+                </td>
+                <td>
+                  <% if user.admin? %>
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">Admin</span>
+                  <% else %>
+                    <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 px-2 py-1">User</span>
+                  <% end %>
+                </td>
+                <td class="pe-4 text-end">
+                  <div class="btn-group">
+                    <%= link_to "Details", admin_user_path(user), class: "btn-secondary btn-sm" %>
+                    <%= link_to "Edit", edit_admin_user_path(user), class: "btn-secondary btn-sm" %>
+                    <%= link_to "Delete", admin_user_path(user),
+                        data: { turbo_method: :delete, turbo_confirm: "Are you sure? This will delete all user data." },
+                        class: "btn-danger btn-sm" %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
 
-    <div class="pagination">
-      <%# If you are using a gem like kaminari or will_paginate, add the helper here %>
-      <p>[ Pagination ]</p> 
-    </div>
+      <div class="p-3 border-top bg-light text-center small text-muted">
+        [ Pagination ]
+      </div>
 
-  <% else %>
-    <p>No users found.</p>
-  <% end %>
-
-  <div class="actions">
-    <%= link_to "New User", new_admin_user_path %>
+    <% else %>
+      <div class="p-5 text-center">
+        <p class="text-muted mb-0">No users found.</p>
+      </div>
+    <% end %>
   </div>
-</main>
+</div>

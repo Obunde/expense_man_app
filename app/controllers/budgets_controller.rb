@@ -18,6 +18,9 @@ class BudgetsController < ApplicationController
     end
   end
 
+  def new
+    redirect_to budgets_path
+  end
   def edit
   end
 

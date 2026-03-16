@@ -1,33 +1,48 @@
-<%# app/views/dashboard/index.html.erb %>
-<h2>Dashboard</h2>
-
-<% if flash[:notice] %>
-  <p><%= flash[:notice] %></p>
-<% end %>
-
-<!-- Monthly Summary -->
-<div>
-  <h3>Monthly Summary — <%= Date::MONTHNAMES[Date.current.month] %> <%= Date.current.year %></h3>
-
-  <% if @budget %>
-    <p>Monthly Budget: <%= @budget.monthly_limit %></p>
-
-    <p>Total Spending this month: <%= @total_spending %></p>
-    
-    <p>Remaining: <%= @budget.monthly_limit - @total_spending %></p>
-
-    <% if @total_spending > @budget.monthly_limit %>
-      <p style="color:red;">⚠️ You have exceeded your monthly budget!</p>
-    <% elsif @total_spending >= @budget.monthly_limit * 0.9 %>
-      <p style="color:orange;">⚠️ You are close to exceeding your monthly budget!</p>
-    <% end %>
-  <% else %>
-    <p>No budget set for this month. <%= link_to "Set a budget", new_budget_path %></p>
-  <% end %>
+<div class="page-header">
+  <h2>Dashboard</h2>
+  <div class="header-actions">
+    <%= link_to "Add Expense", new_expense_path, class: "btn-primary" %>
+  </div>
 </div>
 
-<!-- Recent Expenses -->
-<div>
+<section class="summary-grid">
+  <div class="summary-card">
+    <h4>Monthly Budget</h4>
+    <p class="amount"><%= number_to_currency(@budget&.monthly_limit || 0) %></p>
+    <% unless @budget %>
+      <%= link_to "Set Budget", budgets_path, class: "text-link" %>
+    <% end %>
+  </div>
+
+  <div class="summary-card">
+    <h4>Total Spending</h4>
+    <p class="amount spending"><%= number_to_currency(@total_spending) %></p>
+    <small><%= Date::MONTHNAMES[Date.current.month] %> <%= Date.current.year %></small>
+  </div>
+
+  <div class="summary-card <%= 'warning' if @budget && @total_spending >= @budget.monthly_limit * 0.9 %>">
+    <h4>Remaining</h4>
+    <% if @budget %>
+      <p class="amount <%= 'danger' if @total_spending > @budget.monthly_limit %>">
+        <%= number_to_currency(@budget.monthly_limit - @total_spending) %>
+      </p>
+    <% else %>
+      <p class="amount">--</p>
+    <% end %>
+  </div>
+</section>
+
+<% if @budget %>
+  <% if @total_spending > @budget.monthly_limit %>
+    <div class="flash alert">⚠️ You have exceeded your monthly budget!</div>
+  <% elsif @total_spending >= @budget.monthly_limit * 0.9 %>
+    <div class="flash alert" style="background-color: #fff3cd; color: #856404; border-color: #ffeeba;">
+      ⚠️ You are close to exceeding your monthly budget!
+    </div>
+  <% end %>
+<% end %>
+
+<section class="recent-activity">
   <h3>Recent Expenses</h3>
 
   <% if @recent_expenses.any? %>
@@ -44,17 +59,17 @@
         <% @recent_expenses.each do |expense| %>
           <tr>
             <td><%= expense.title %></td>
-            <td><%= expense.amount %></td>
-            <td><%= expense.category.name %></td>
-            <td><%= expense.expense_date %></td>
+            <td><strong><%= number_to_currency(expense.amount) %></strong></td>
+            <td><span class="category-badge"><%= expense.category.name %></span></td>
+            <td><%= expense.expense_date.strftime("%b %d, %Y") %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
+    <div class="btn-group">
+      <%= link_to "View All Expenses", expenses_path, class: "btn-secondary" %>
+    </div>
   <% else %>
     <p>No expenses recorded yet. <%= link_to "Add an expense", new_expense_path %></p>
   <% end %>
-</div>
-
-<%= link_to "Add Expense", new_expense_path %>
-<%= link_to "View Expenses", expenses_path %>
+</section>

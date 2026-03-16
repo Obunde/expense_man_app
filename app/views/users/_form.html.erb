@@ -1,0 +1,24 @@
+<%= form_with model: user, class: "spendless-form" do |f| %>
+  <% if user.errors.any? %>
+    <div class="alert alert-danger p-2 mb-3 small">
+      <% user.errors.full_messages.each do |msg| %>
+        <p class="mb-0"><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label small fw-bold text-muted" %>
+    <%= f.text_field :name, class: "form-control form-control-sm", placeholder: "Your full name" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :email, class: "form-label small fw-bold text-muted" %>
+    <%= f.email_field :email, class: "form-control form-control-sm", placeholder: "name@example.com" %>
+  </div>
+
+  <div class="mt-4 d-flex gap-2">
+    <%= f.submit "Update Profile", class: "btn-primary btn-sm px-4" %>
+    <%= link_to "Cancel", user_path(user), class: "btn-secondary btn-sm px-4" %>
+  </div>
+<% end %>

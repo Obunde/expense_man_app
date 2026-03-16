@@ -1,27 +1,41 @@
-<main>
-  <h2>Expense Details</h2>
-
-  <table>
-    <tr>
-      <th>Title:</th>
-      <td><%= @expense.title %></td>
-    </tr>
-    <tr>
-      <th>Amount:</th>
-      <td><%= @expense.amount %></td>
-    </tr>
-    <tr>
-      <th>Date:</th>
-      <td><%= @expense.expense_date.strftime("%d/%m/%Y") if @expense.expense_date %></td>
-    </tr>
-    <tr>
-      <th>Category:</th>
-      <td><%= @expense.category&.name || "No Category" %></td>
-    </tr>
-  </table>
-
-  <div class="actions">
-    <%= link_to "Edit", edit_expense_path(@expense) %>
-    <%= link_to "Back", expenses_path %>
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">Expense Details</h3>
+  <div class="header-actions">
+    <%= link_to "Back to List", expenses_path, class: "btn-secondary btn-sm" %>
   </div>
-</main>
+</div>
+
+<div class="detail-card shadow-sm mx-auto" style="max-width: 550px;">
+  <div class="detail-row py-3 px-4 border-bottom">
+    <span class="detail-label text-muted small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Title</span>
+    <span class="detail-value fw-normal text-dark"><%= @expense.title %></span>
+  </div>
+
+  <div class="detail-row py-3 px-4 border-bottom">
+    <span class="detail-label text-muted small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Amount</span>
+    <span class="detail-value fw-bold text-success">
+      <%= number_to_currency(@expense.amount) %>
+    </span>
+  </div>
+
+  <div class="detail-row py-3 px-4 border-bottom">
+    <span class="detail-label text-muted small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Date</span>
+    <span class="detail-value text-dark"><%= @expense.expense_date.strftime("%b %d, %Y") if @expense.expense_date %></span>
+  </div>
+
+  <div class="detail-row py-3 px-4">
+    <span class="detail-label text-muted small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Category</span>
+    <span class="detail-value">
+      <span class="category-badge px-2 py-1" style="font-size: 0.85rem;">
+        <%= @expense.category&.name || "Uncategorized" %>
+      </span>
+    </span>
+  </div>
+
+  <div class="detail-actions d-flex justify-content-center gap-2 py-3 bg-light">
+    <%= link_to "Edit Expense", edit_expense_path(@expense), class: "btn-primary btn-sm px-3" %>
+    <%= link_to "Delete", expense_path(@expense), 
+        data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, 
+        class: "btn-danger btn-sm px-3" %>
+  </div>
+</div>

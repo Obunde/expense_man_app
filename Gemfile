@@ -29,6 +29,10 @@ gem "jbuilder"
 # Authentication
 gem "devise"
 
+gem "bootstrap", "~> 5.3"
+
+gem "sassc-rails"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

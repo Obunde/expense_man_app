@@ -1,27 +1,39 @@
-<%= form_with(model: [:admin, user]) do |f| %>
-  <div>
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-
-  <div>
-    <%= f.label :email %><br>
-    <%= f.email_field :email %>
-  </div>
-
-  <% if user.new_record? %>
-    <div>
-      <%= f.label :password %><br>
-      <%= f.password_field :password %>
+<%= form_with(model: [:admin, user], class: "spendless-form") do |f| %>
+  <% if user.errors.any? %>
+    <div class="alert alert-danger p-2 mb-3 small">
+      <% user.errors.full_messages.each do |msg| %>
+        <p class="mb-0"><%= msg %></p>
+      <% end %>
     </div>
   <% end %>
 
-  <div>
-    <%= f.label :admin, "Is Admin?" %>
-    <%= f.check_box :admin %>
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label small fw-bold text-muted" %>
+    <%= f.text_field :name, class: "form-control form-control-sm" %>
   </div>
 
-  <div>
-    <%= f.submit %>
+  <div class="mb-3">
+    <%= f.label :email, class: "form-label small fw-bold text-muted" %>
+    <%= f.email_field :email, class: "form-control form-control-sm" %>
+  </div>
+
+  <% if user.new_record? %>
+    <div class="mb-3">
+      <%= f.label :password, class: "form-label small fw-bold text-muted" %>
+      <%= f.password_field :password, class: "form-control form-control-sm" %>
+    </div>
+  <% end %>
+
+  <div class="mb-4 p-3 bg-light border rounded">
+    <div class="form-check form-switch">
+      <%= f.check_box :admin, class: "form-check-input", id: "adminSwitch" %>
+      <%= f.label :admin, "Grant Administrator Privileges", class: "form-check-label fw-bold text-dark", for: "adminSwitch" %>
+      <div class="form-text small">Admins can manage other users, categories, and site-wide budgets.</div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.submit user.new_record? ? "Create User" : "Update User", class: "btn-primary btn-sm px-4" %>
+    <%= link_to "Cancel", admin_users_path, class: "btn-secondary btn-sm px-4" %>
   </div>
 <% end %>

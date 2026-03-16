@@ -1,0 +1,17 @@
+<div class="page-header mb-4">
+  <h3>Create New User</h3>
+</div>
+
+<div class="card shadow-sm border-0 mx-auto" style="max-width: 550px;">
+  <div class="card-body p-4">
+    <div class="alert alert-info py-2 px-3 small mb-4 border-0" style="background-color: lighten($caper, 10%); color: $abstract-green;">
+      <i class="bi bi-info-circle me-2"></i> New users created here can be assigned administrative roles immediately.
+    </div>
+
+    <%= render "form", user: @user %>
+  </div>
+</div>
+
+<div class="text-center mt-3">
+  <%= link_to "Back to User List", admin_users_path, class: "text-link small" %>
+</div>

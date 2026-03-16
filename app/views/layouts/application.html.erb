@@ -1,47 +1,50 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ExpenseManApp</title>
+    <title>Spendless</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <nav>
-      <% if user_signed_in? %>
-        <strong>Spendless</strong>
-        <% if admin? %>
-          <%= link_to "Admin", admin_users_path %>
-        <% end %>
-        <%= link_to "Dashboard", authenticated_root_path %>
-        <%= link_to "Expenses", expenses_path %>
-        <%= link_to "Categories", categories_path %>
-        <%= link_to "Budget", budgets_path %>
-        <%= link_to "Profile", user_path(current_user) %>
-        <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete } %>
-      <% else %>
-        <strong>Spendless</strong>
-        <%= link_to "Login", new_user_session_path %>
-        <%= link_to "Sign Up", new_user_registration_path %>
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="brand">Spendless</div>
+        <div class="nav-links">
+          <% if user_signed_in? %>
+            <% if admin? %>
+              <%= link_to "Admin", admin_users_path, class: "nav-item" %>
+            <% end %>
+            <%= link_to "Dashboard", authenticated_root_path, class: "nav-item" %>
+            <%= link_to "Expenses", expenses_path, class: "nav-item" %>
+            <%= link_to "Categories", categories_path, class: "nav-item" %>
+            <%= link_to "Budget", budgets_path, class: "nav-item" %>
+            <%= link_to "Profile", user_path(current_user), class: "nav-item" %>
+            <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-item logout" %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, class: "nav-item" %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "nav-item signup" %>
+          <% end %>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container">
+      <% if flash[:notice] %>
+        <div class="flash notice"><%= flash[:notice] %></div>
       <% end %>
-    </nav>
+      <% if flash[:alert] %>
+        <div class="flash alert"><%= flash[:alert] %></div>
+      <% end %>
 
-    <% if flash[:notice] %>
-      <p><%= flash[:notice] %></p>
-    <% end %>
+      <%= yield %>
+    </main>
 
-    <% if flash[:alert] %>
-      <p><%= flash[:alert] %></p>
-    <% end %>
-
-    <%= yield %>
-
-    <footer>
-      <p>Obunde Tech LTD</p>
+    <footer class="main-footer">
+      <p>&copy; <%= Time.now.year %> Obunde Tech LTD</p>
     </footer>
   </body>
 </html>

@@ -1,0 +1,37 @@
+<%= form_with model: budget, class: "spendless-form" do |f| %>
+  <% if budget.errors.any? %>
+    <div class="alert alert-danger p-2 mb-3 small">
+      <% budget.errors.full_messages.each do |msg| %>
+        <p class="mb-0"><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :month, class: "form-label small fw-bold text-muted" %>
+    <%= f.select :month,
+        (1..12).map { |m| [Date::MONTHNAMES[m], m] },
+        { include_blank: "Select month", selected: budget.month },
+        { class: "form-select form-select-sm" } %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :year, class: "form-label small fw-bold text-muted" %>
+    <%= f.number_field :year, placeholder: "e.g. 2026", 
+        value: budget.year || Date.current.year, 
+        class: "form-control form-control-sm" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :monthly_limit, "Monthly Limit", class: "form-label small fw-bold text-muted" %>
+    <div class="input-group input-group-sm">
+      <span class="input-group-text bg-light">KES</span>
+      <%= f.number_field :monthly_limit, step: 0.01, placeholder: "0.00", 
+          class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= f.submit budget.new_record? ? "Set Budget" : "Update Budget", class: "btn-primary btn-sm w-100 py-2" %>
+  </div>
+<% end %>

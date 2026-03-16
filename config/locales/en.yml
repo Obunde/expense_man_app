@@ -29,3 +29,9 @@
 
 en:
   hello: "Hello world"
+  number:
+    currency:
+      format:
+        unit: "KES "
+        precision: 2
+        format: "%u%n"
