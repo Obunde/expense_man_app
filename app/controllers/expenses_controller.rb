@@ -25,6 +25,11 @@ class ExpensesController < ApplicationController
     end
   end
 
+  def show
+    # This line fetches the expense from the database using the ID from the URL
+    @expense = Expense.find(params[:id])
+  end
+
   def edit
     @categories = current_user.categories
   end

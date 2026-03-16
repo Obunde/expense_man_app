@@ -14,6 +14,9 @@
     <nav>
       <% if user_signed_in? %>
         <strong>Spendless</strong>
+        <% if admin? %>
+          <%= link_to "Admin", admin_users_path %>
+        <% end %>
         <%= link_to "Dashboard", authenticated_root_path %>
         <%= link_to "Expenses", expenses_path %>
         <%= link_to "Categories", categories_path %>

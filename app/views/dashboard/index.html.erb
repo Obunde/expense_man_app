@@ -9,10 +9,11 @@
 <div>
   <h3>Monthly Summary — <%= Date::MONTHNAMES[Date.current.month] %> <%= Date.current.year %></h3>
 
-  <p>Total Spending this month: <%= @total_spending %></p>
-
   <% if @budget %>
     <p>Monthly Budget: <%= @budget.monthly_limit %></p>
+
+    <p>Total Spending this month: <%= @total_spending %></p>
+    
     <p>Remaining: <%= @budget.monthly_limit - @total_spending %></p>
 
     <% if @total_spending > @budget.monthly_limit %>
@@ -55,4 +56,5 @@
   <% end %>
 </div>
 
-<%= link_to "View all Expenses", expenses_path %>
+<%= link_to "Add Expense", new_expense_path %>
+<%= link_to "View Expenses", expenses_path %>

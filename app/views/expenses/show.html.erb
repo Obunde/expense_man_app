@@ -1,0 +1,27 @@
+<main>
+  <h2>Expense Details</h2>
+
+  <table>
+    <tr>
+      <th>Title:</th>
+      <td><%= @expense.title %></td>
+    </tr>
+    <tr>
+      <th>Amount:</th>
+      <td><%= @expense.amount %></td>
+    </tr>
+    <tr>
+      <th>Date:</th>
+      <td><%= @expense.expense_date.strftime("%d/%m/%Y") if @expense.expense_date %></td>
+    </tr>
+    <tr>
+      <th>Category:</th>
+      <td><%= @expense.category&.name || "No Category" %></td>
+    </tr>
+  </table>
+
+  <div class="actions">
+    <%= link_to "Edit", edit_expense_path(@expense) %>
+    <%= link_to "Back", expenses_path %>
+  </div>
+</main>

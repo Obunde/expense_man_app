@@ -41,6 +41,7 @@
           <td><%= expense.expense_date %></td>
           <td>
             <%= link_to "Edit", edit_expense_path(expense) %>
+            <%= link_to "View", expense_path(expense) %>
             <%= link_to "Delete", expense_path(expense),
                 data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
           </td>

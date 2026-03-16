@@ -7,21 +7,20 @@ Rails.application.routes.draw do
     root to: "dashboard#index", as: :authenticated_root
   end
 
-  devise_scope :user do
-    root to: "devise/sessions#new"
+  unauthenticated do
+    root to: "pages#top_page"
   end
 
   resource :dashboard, only: [:index]
 
   resources :users, only: [:show, :edit, :update]
 
-  resources :expenses, only: [:index, :new, :create, :edit, :update, :destroy]
+  resources :expenses
 
-  resources :categories, only: [:index, :create, :destroy]
-
-  resources :budgets, only: [:index, :create, :edit, :update]
+  resources :categories
+  resources :budgets
 
   namespace :admin do
-    resources :users, only: [:index, :destroy]
+    resources :users
   end
 end
