@@ -15,12 +15,12 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show, :edit, :update]
 
-  resources :expenses
+  resources :expenses, only: [:index, :new, :create, :show, :edit, :update, :destroy]
 
-  resources :categories
-  resources :budgets
+  resources :categories, only: [:index, :create, :destroy]
+  resources :budgets, except: [:show, :destroy]
 
   namespace :admin do
-    resources :users
+    resources :users, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   end
 end
