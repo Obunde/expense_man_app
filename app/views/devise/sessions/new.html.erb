@@ -1,24 +1,42 @@
-<%# app/views/devise/sessions/new.html.erb %>
-<h2>Log In</h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <% if flash[:alert] %>
-    <p><%= flash[:alert] %></p>
-  <% end %>
+  <div class="row justify-content-center">
+    <div class="col-md-5">
 
-  <div>
-    <%= f.label :email %>
-    <%= f.email_field :email, autofocus: true %>
+      <div>
+        <div>
+
+          <h2 class="text-center mb-4">Log In</h2>
+
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+
+            <% if flash[:alert] %>
+              <div class="alert alert-danger">
+                <%= flash[:alert] %>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <%= f.label :email, class: "form-label" %>
+              <%= f.email_field :email, autofocus: true, class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :password, class: "form-label" %>
+              <%= f.password_field :password, class: "form-control" %>
+            </div>
+
+            <div class="d-grid">
+              <%= f.submit "Log In", class: "btn btn-primary" %>
+            </div>
+
+          <% end %>
+
+          <div class="text-center mt-3">
+            <%= link_to "Don't have an account? Sign up", new_registration_path(resource_name) %>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
   </div>
-
-  <div>
-    <%= f.label :password %>
-    <%= f.password_field :password %>
-  </div>
-
-  <div>
-    <%= f.submit "Log In" %>
-  </div>
-<% end %>
-
-<%= link_to "Don't have an account? Sign up", new_registration_path(resource_name) %>
