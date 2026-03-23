@@ -1,5 +1,5 @@
-# app/controllers/dashboard_controller.rb
-class DashboardController < ApplicationController
+# app/controllers/dashboards_controller.rb
+class DashboardsController < ApplicationController
   before_action :authenticate_user!
 
   def index

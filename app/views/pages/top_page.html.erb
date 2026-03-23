@@ -15,5 +15,9 @@
   <div class="btn-group" role="group">
     <%= link_to "Log in", new_user_session_path, class: "btn-primary" %>
     <%= link_to "Sign in", new_user_registration_path, class: "btn-secondary" %>
+
+    <%= link_to "Try as Guest", guest_session_path, 
+              data: { turbo_method: :post }, 
+              class: "btn-outline-secondary" %>
   </div>
 </main>

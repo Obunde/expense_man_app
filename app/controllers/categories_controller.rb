@@ -1,6 +1,7 @@
 # app/controllers/categories_controller.rb
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
+  before_action :prevent_guest_modification, only: [:create, :destroy]
 
   def index
     @categories = current_user.categories.order(created_at: :desc)

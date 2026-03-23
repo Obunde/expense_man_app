@@ -1,6 +1,8 @@
 <div class="page-header d-flex justify-content-between align-items-center mb-4">
   <h3 class="mb-0">User Management</h3>
-  <%= link_to "New User", new_admin_user_path, class: "btn-primary btn-sm" %>
+  <% unless current_user.guest? %>
+    <%= link_to "New User", new_admin_user_path, class: "btn-primary btn-sm" %>
+  <% end %>
 </div>
 
 <div class="card shadow-sm border-0">
@@ -32,10 +34,12 @@
                 <td class="pe-4 text-end">
                   <div class="btn-group">
                     <%= link_to "Details", admin_user_path(user), class: "btn-secondary btn-sm" %>
-                    <%= link_to "Edit", edit_admin_user_path(user), class: "btn-secondary btn-sm" %>
+                    <% unless current_user.admin? %>
+                        <%= link_to "Edit", edit_admin_user_path(user), class: "btn-secondary btn-sm" %>
                     <%= link_to "Delete", admin_user_path(user),
                         data: { turbo_method: :delete, turbo_confirm: "Are you sure? This will delete all user data." },
                         class: "btn-danger btn-sm" %>
+                    <% end %>
                   </div>
                 </td>
               </tr>

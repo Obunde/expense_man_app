@@ -11,7 +11,8 @@ Rails.application.routes.draw do
     root to: "pages#top_page"
   end
 
-  resource :dashboard, only: [:index]
+  # get "/dashboard", to: "dashboard#index", as: :dashboard
+  resources :dashboards, only: [:index]
 
   resources :users, only: [:show, :edit, :update]
 
@@ -23,4 +24,6 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   end
+
+  resource :guest_session, only: [:create, :destroy]
 end

@@ -2,6 +2,7 @@
 class BudgetsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_budget, only: [:edit, :update]
+  before_action :prevent_guest_modification, only: [:new, :edit, :create, :update]
 
   def index
     @budgets = current_user.budgets.order(year: :desc, month: :desc)

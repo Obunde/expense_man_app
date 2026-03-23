@@ -2,6 +2,7 @@
 class ExpensesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_expense, only: [:edit, :update, :destroy]
+  before_action :prevent_guest_modification, only: [:new, :edit, :create, :update, :destroy]
 
   def index
     @expenses = current_user.expenses.includes(:category).order(expense_date: :desc)

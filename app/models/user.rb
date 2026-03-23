@@ -9,4 +9,10 @@ class User < ApplicationRecord
   has_many :budgets, dependent: :destroy
 
   validates :name, presence: true
+
+  # app/models/user.rb
+  def guest?
+    false
+  end
+
 end

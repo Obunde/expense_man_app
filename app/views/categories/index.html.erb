@@ -3,30 +3,35 @@
 </div>
 
 <div class="row g-4">
-  <div class="col-md-5">
-    <div class="card shadow-sm border-0">
-      <div class="card-body p-4">
-        <h5 class="card-title mb-3 text-success">Add Category</h5>
-        
-        <%= form_with model: @category, class: "spendless-form" do |f| %>
-          <% if @category.errors.any? %>
-            <div class="alert alert-danger p-2 small">
-              <% @category.errors.full_messages.each do |msg| %>
-                <p class="mb-0"><%= msg %></p>
-              <% end %>
+  <% unless current_user.guest? %>
+    <div class="col-md-5">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3 text-success">Add Category</h5>
+          <%= form_with model: @category, class: "spendless-form" do |f| %>
+            <% if @category.errors.any? %>
+              <div class="alert alert-danger p-2 small">
+                <% @category.errors.full_messages.each do |msg| %>
+                  <p class="mb-0"><%= msg %></p>
+                <% end %>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <%= f.label :name, "Category name", class: "form-label small fw-bold text-muted" %>
+              <%= f.text_field :name, placeholder: "e.g. Entertainment", class: "form-control form-control-sm" %>
             </div>
+
+            <%= f.submit "Create Category", class: "btn-primary btn-sm w-100 py-2" %>
           <% end %>
-
-          <div class="mb-3">
-            <%= f.label :name, "Category name", class: "form-label small fw-bold text-muted" %>
-            <%= f.text_field :name, placeholder: "e.g. Entertainment", class: "form-control form-control-sm" %>
-          </div>
-
-          <%= f.submit "Create Category", class: "btn-primary btn-sm w-100 py-2" %>
-        <% end %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
+
+  <div class="<%= current_user.guest? ? 'col-md-12' : 'col-md-7' %>">
+    </div>
+  
 
   <div class="col-md-7">
     <div class="card shadow-sm border-0">

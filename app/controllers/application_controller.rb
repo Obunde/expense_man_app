@@ -8,10 +8,29 @@ class ApplicationController < ActionController::Base
     current_user&.admin? 
   end
 
+  def current_user
+    super || (session[:demo_mode] ? Guest.new : nil)
+  end
+
+  def authenticate_user!(opts = {})
+    if session[:demo_mode]
+      # Guest is "authenticated" for viewing purposes
+      return true
+    end
+    super
+  end
+  
   protected
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
     devise_parameter_sanitizer.permit(:account_update, keys: [:name])
+  end
+
+  private
+  def prevent_guest_modification
+    if current_user.guest?
+      redirect_back fallback_location: root_path, alert: "Guests cannot modify data."
+    end
   end
 end

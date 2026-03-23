@@ -3,6 +3,7 @@ class Admin::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :prevent_guest_modification, only: [:new, :edit, :create, :update, :destroy]
 
   def index
     # Removed the 'where(admin: false)' so admins can manage everyone
