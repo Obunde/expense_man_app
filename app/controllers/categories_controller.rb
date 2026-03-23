@@ -1,7 +1,7 @@
 # app/controllers/categories_controller.rb
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
-  before_action :prevent_guest_modification, only: [:create, :destroy]
+  before_action :prevent_guest_modification, only: [:create, :update, :destroy]
 
   def index
     @categories = current_user.categories.order(created_at: :desc)
@@ -15,6 +15,19 @@ class CategoriesController < ApplicationController
     else
       @categories = current_user.categories
       render :index, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    @category = current_user.categories.find(params[:id])
+  end
+
+  def update
+    @category = current_user.categories.find(params[:id])
+    if @category.update(category_params)
+      redirect_to categories_path, notice: "Category updated successfully."
+    else
+      redirect_to categories_path, alert: @category.errors.full_messages.to_sentence
     end
   end
 

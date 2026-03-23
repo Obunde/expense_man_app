@@ -1,0 +1,16 @@
+<%= form_with model: category, class: "spendless-form" do |f| %>
+  <% if category.errors.any? %>
+    <div class="alert alert-danger p-2 small">
+      <% category.errors.full_messages.each do |msg| %>
+        <p class="mb-0"><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, "Category name", class: "form-label small fw-bold text-muted" %>
+    <%= f.text_field :name, placeholder: "e.g. Entertainment", class: "form-control form-control-sm" %>
+  </div>
+
+  <%= f.submit category.new_record? ? "Create Category" : "Save Changes", class: "btn-primary btn-sm w-100 py-2" %>
+<% end %>

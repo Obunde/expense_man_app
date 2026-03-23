@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 
   resources :expenses, only: [:index, :new, :create, :show, :edit, :update, :destroy]
 
-  resources :categories, only: [:index, :create, :destroy]
+  resources :categories, only: [:index, :create, :update, :edit, :destroy]
   resources :budgets, except: [:show, :destroy]
 
   namespace :admin do

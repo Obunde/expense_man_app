@@ -34,11 +34,11 @@
                 <td class="pe-4 text-end">
                   <div class="btn-group">
                     <%= link_to "Details", admin_user_path(user), class: "btn-secondary btn-sm" %>
-                    <% unless current_user.admin? %>
+                    <% unless current_user.guest? %>
                         <%= link_to "Edit", edit_admin_user_path(user), class: "btn-secondary btn-sm" %>
-                    <%= link_to "Delete", admin_user_path(user),
-                        data: { turbo_method: :delete, turbo_confirm: "Are you sure? This will delete all user data." },
-                        class: "btn-danger btn-sm" %>
+                        <%= link_to "Delete", admin_user_path(user),
+                            data: { turbo_method: :delete, turbo_confirm: "Are you sure? This will delete all user data." },
+                            class: "btn-danger btn-sm" %>
                     <% end %>
                   </div>
                 </td>
